@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from telnetlib import LOGOUT
+from django.shortcuts import render, redirect
 from .models import Empleados
 from .models import Carro
 from .models import Repuestos
@@ -18,6 +19,24 @@ from .models import Proveedor
 from .models import Bitacora_Alertas
 from .models import Historial_Cambio
 from .models import Cambios_Salarios
+from django.contrib.auth import authenticate, login
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')  # Redirige al usuario a la página deseada después del inicio de sesión
+        else:
+            return render(request, 'login.html', {'error': 'Credenciales inválidas'})
+    else:
+        return render(request, 'login.html')
+
+def logout_view(request):
+    LOGOUT(request)
+    return redirect('login')
 
 def lista_empleados(request):
     empleados = Empleados.objects.all()
