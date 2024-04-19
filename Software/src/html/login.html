@@ -45,7 +45,7 @@
             width: 100px;
             padding: 8px;
             background-color: #470101;
-            color: #ffffff;
+            color: #000000;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -53,9 +53,17 @@
 
         input[type="submit"]:hover {
             background-color: #4c0303;
+            color: #000000;
+
         }
 
         form {
+            text-align: center;
+            color: #000000;
+        }
+
+        .error-message {
+            color: #ff0000;
             text-align: center;
         }
     </style>
@@ -71,7 +79,7 @@
         <input type="submit" value="Login">
     </form>
     {% if error %}
-    <p>{{ error }}</p>
+    <p class="error-message">{{ error }}</p>
     {% endif %}
 </body>
 </html>

@@ -1,5 +1,4 @@
 from telnetlib import LOGOUT
-from django.shortcuts import render, redirect
 from .models import Empleados
 from .models import Carro
 from .models import Repuestos
@@ -20,23 +19,44 @@ from .models import Bitacora_Alertas
 from .models import Historial_Cambio
 from .models import Cambios_Salarios
 from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('dashboard')  # Redirige al usuario a la página deseada después del inicio de sesión
+            return redirect('menu') 
         else:
-            return render(request, 'login.html', {'error': 'Credenciales inválidas'})
+            error = 'Credenciales inválidas. Por favor, inténtalo de nuevo.'
+            return render(request, 'login.html', {'error': error})
     else:
         return render(request, 'login.html')
+
+
+@login_required
+def menu_view(request):
+    return render(request, 'menu.html')
 
 def logout_view(request):
     LOGOUT(request)
     return redirect('login')
+
+def vendedor_menu_view(request):
+    return render(request, 'vendedor_menu.html')
+
+def admin_menu_view(request):
+    return render(request, 'admin_menu.html')
+
+def contador_menu_view(request):
+    return render(request, 'contador_menu.html')
+
+def comprador_menu_view(request):
+    return render(request, 'comprador_menu.html')
 
 def lista_empleados(request):
     empleados = Empleados.objects.all()
