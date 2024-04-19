@@ -19,4 +19,5 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('formulario_preguntas/', views.formulario_preguntas, name='formulario_preguntas'),
 ]
